@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react'
+import { createContext } from 'react'
 import { useQuery } from 'react-query'
 import axios from 'axios'
 const baseUrl = 'http://localhost:4000'

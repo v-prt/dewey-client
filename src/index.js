@@ -1,16 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
 import { App } from './App'
 import reportWebVitals from './reportWebVitals'
 import { TodoProvider } from './contexts/TodoContext'
-import {
-  // useQuery,
-  // useMutation,
-  // useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 ReactDOM.render(
