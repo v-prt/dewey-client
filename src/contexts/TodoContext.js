@@ -10,5 +10,14 @@ export const TodoProvider = ({ children }) => {
     return res.data.todos
   })
 
-  return <TodoContext.Provider value={{ data, status }}>{children}</TodoContext.Provider>
+  const addTodo = async todo => {
+    try {
+      const res = await axios.post(`${baseUrl}/todos`, todo)
+      return res.data.todo
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  return <TodoContext.Provider value={{ data, status, addTodo }}>{children}</TodoContext.Provider>
 }
