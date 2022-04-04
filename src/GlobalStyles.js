@@ -22,12 +22,9 @@ export default createGlobalStyle`
         border: 0;
         letter-spacing: 1px;
     }
-    html, body, #root {
-        background: #f375b20d;
+    html, body {
         font-family: 'Roboto', sans-serif;
         color: #222;
-        height: 100%;
-        width: 100%;
         font-size: 14px;
     }
     h1, h2, h3 {

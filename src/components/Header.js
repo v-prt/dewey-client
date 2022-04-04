@@ -1,9 +1,13 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from 'antd'
 import styled from 'styled-components/macro'
 import { backgrounds } from '../GlobalStyles'
+import { UserContext } from '../contexts/UserContext'
 
 export const Header = () => {
+  const { currentUser, handleLogout } = useContext(UserContext)
+
   return (
     <Wrapper>
       <div className='inner'>
@@ -17,12 +21,25 @@ export const Header = () => {
           </p>
         </span>
         <span className='links'>
-          <Link to='/register'>
-            <Button type='secondary'>Register</Button>
-          </Link>
-          <Link to='/login'>
-            <Button type='primary'>Sign In</Button>
-          </Link>
+          {currentUser ? (
+            <>
+              <Link to='/dashboard'>
+                <Button type='primary'>My Dashboard</Button>
+                <Button type='secondary' onClick={handleLogout}>
+                  Sign Out
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to='/login'>
+                <Button type='primary'>Sign In</Button>
+              </Link>
+              <Link to='/register'>
+                <Button type='secondary'>Register</Button>
+              </Link>
+            </>
+          )}
         </span>
       </div>
     </Wrapper>

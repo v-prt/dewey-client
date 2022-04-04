@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { Input } from 'formik-antd'
 import { FormItem } from './forms/FormItem'
@@ -10,30 +10,29 @@ import styled from 'styled-components/macro'
 import { UserContext } from '../contexts/UserContext'
 YupPassword(Yup) // extend yup
 
-export const Register = () => {
-  const { handleSignup } = useContext(UserContext)
+export const Login = () => {
+  const { currentUser, handleLogin } = useContext(UserContext)
 
   const initialValues = {
-    name: '',
     email: '',
     password: '',
   }
 
-  const accountSchema = Yup.object().shape({
-    name: Yup.string().min(2, 'Too short').max(30, 'Too long').required('Name required'),
-    email: Yup.string().email('Invalid email').required('Email required'),
-    password: Yup.string().min(6, 'Too short').required('Password required'),
+  const loginSchema = Yup.object().shape({
+    email: Yup.string().required('Email required'),
+    password: Yup.string().required('Password required'),
   })
 
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log(values)
     setSubmitting(true)
     try {
-      const result = await handleSignup(values)
+      const result = await handleLogin(values)
       if (result.error) {
         console.log(result.error)
         setSubmitting(false)
       } else {
+        localStorage.setItem('deweyToken', result._id)
         console.log(result)
         setSubmitting(false)
       }
@@ -43,24 +42,19 @@ export const Register = () => {
     }
   }
 
-  return (
+  return currentUser ? (
+    <Navigate to='/dashboard' />
+  ) : (
     <Wrapper>
-      <h1>Register</h1>
-      <p>
-        Create an account to start tracking your tasks. Stay on top of your to-do lists and maintain
-        streaks to form healthy new habits.
-      </p>
+      <h1>Sign In</h1>
       <Formik
         initialValues={initialValues}
-        validationSchema={accountSchema}
+        validationSchema={loginSchema}
         validateOnChange={false}
         validateOnBlur={false}
         onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form>
-            <FormItem name='name'>
-              <Input name='name' type='text' placeholder='Name' autoFocus />
-            </FormItem>
             <FormItem name='email'>
               <Input name='email' type='text' placeholder='Email' />
             </FormItem>
@@ -68,7 +62,7 @@ export const Register = () => {
               <Input.Password name='password' type='password' placeholder='Password' />
             </FormItem>
             <div className='actions'>
-              <Link to='/login'>Already registered? Sign in.</Link>
+              <Link to='/register'>Not registered? Sign up.</Link>
               <Button htmlType='submit' type='primary' className='color' loading={isSubmitting}>
                 SUBMIT
               </Button>

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { App } from './App'
 import reportWebVitals from './reportWebVitals'
+import { UserProvider } from './contexts/UserContext'
 import { TodoProvider } from './contexts/TodoContext'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -9,9 +10,11 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 ReactDOM.render(
   <QueryClientProvider client={new QueryClient()}>
     <React.StrictMode>
-      <TodoProvider>
-        <App />
-      </TodoProvider>
+      <UserProvider>
+        <TodoProvider>
+          <App />
+        </TodoProvider>
+      </UserProvider>
     </React.StrictMode>
     <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
   </QueryClientProvider>,
