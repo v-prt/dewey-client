@@ -3,7 +3,7 @@ import { Navigate, Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { Input } from 'formik-antd'
 import { FormItem } from './forms/FormItem'
-import { Button } from 'antd'
+import { Alert, Button } from 'antd'
 import * as Yup from 'yup'
 import YupPassword from 'yup-password'
 import styled from 'styled-components/macro'
@@ -23,21 +23,22 @@ export const Login = () => {
     password: Yup.string().required('Password required'),
   })
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values)
+  const handleSubmit = async (values, { setStatus, setSubmitting }) => {
+    setStatus('')
     setSubmitting(true)
     try {
       const result = await handleLogin(values)
       if (result.error) {
         console.log(result.error)
+        setStatus(result.error)
         setSubmitting(false)
       } else {
         localStorage.setItem('deweyToken', result._id)
-        console.log(result)
         setSubmitting(false)
       }
     } catch (err) {
       console.log(err)
+      setStatus('Oops, something went wrong.')
       setSubmitting(false)
     }
   }
@@ -53,8 +54,9 @@ export const Login = () => {
         validateOnChange={false}
         validateOnBlur={false}
         onSubmit={handleSubmit}>
-        {({ isSubmitting }) => (
+        {({ status, isSubmitting }) => (
           <Form>
+            {status && <Alert message={status} type='error' showIcon />}
             <FormItem name='email'>
               <Input name='email' type='text' placeholder='Email' />
             </FormItem>

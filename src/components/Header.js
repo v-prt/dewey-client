@@ -4,6 +4,7 @@ import { Button } from 'antd'
 import styled from 'styled-components/macro'
 import { backgrounds } from '../GlobalStyles'
 import { UserContext } from '../contexts/UserContext'
+import check from '../assets/check.svg'
 
 export const Header = () => {
   const { currentUser, handleLogout } = useContext(UserContext)
@@ -13,11 +14,13 @@ export const Header = () => {
       <div className='inner'>
         <span className='app-info'>
           <Link to='/'>
-            <h1>DEWEY</h1>
+            <h1>
+              <img src={check} alt='' /> DEWEY
+            </h1>
           </Link>
           <p>
             <span className='dot'>•</span>
-            Your task and habit tracker.
+            Your task and habit tracker
           </p>
         </span>
         <span className='links'>
@@ -25,10 +28,10 @@ export const Header = () => {
             <>
               <Link to='/dashboard'>
                 <Button type='primary'>My Dashboard</Button>
-                <Button type='secondary' onClick={handleLogout}>
-                  Sign Out
-                </Button>
               </Link>
+              <Button type='secondary' onClick={handleLogout}>
+                Sign Out
+              </Button>
             </>
           ) : (
             <>
@@ -65,6 +68,12 @@ const Wrapper = styled.header`
         color: #fff;
         font-size: 1.3rem;
         letter-spacing: 2px;
+        display: flex;
+        align-items: center;
+        img {
+          height: 20px;
+          margin-right: 10px;
+        }
       }
       p {
         display: none;

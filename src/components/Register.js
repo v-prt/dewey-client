@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { Input } from 'formik-antd'
 import { FormItem } from './forms/FormItem'
@@ -11,7 +11,7 @@ import { UserContext } from '../contexts/UserContext'
 YupPassword(Yup) // extend yup
 
 export const Register = () => {
-  const { handleSignup } = useContext(UserContext)
+  const { currentUser, handleSignup } = useContext(UserContext)
 
   const initialValues = {
     name: '',
@@ -26,7 +26,6 @@ export const Register = () => {
   })
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log(values)
     setSubmitting(true)
     try {
       const result = await handleSignup(values)
@@ -34,7 +33,6 @@ export const Register = () => {
         console.log(result.error)
         setSubmitting(false)
       } else {
-        console.log(result)
         setSubmitting(false)
       }
     } catch (err) {
@@ -43,7 +41,9 @@ export const Register = () => {
     }
   }
 
-  return (
+  return currentUser ? (
+    <Navigate to='/dashboard' />
+  ) : (
     <Wrapper>
       <h1>Register</h1>
       <p>

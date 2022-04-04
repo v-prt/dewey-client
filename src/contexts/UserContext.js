@@ -14,11 +14,11 @@ export const UserProvider = ({ children }) => {
   const handleSignup = async values => {
     try {
       const res = await axios.post(`${API_URL}/users`, values)
-      // TODO: log user in on success
-      return res
+      setToken(res.data.user._id)
+      setCurrentUser(res.data.user)
+      return res.data.user
     } catch (err) {
-      console.log(err.response)
-      return { error: err.response.data }
+      return { error: err.response.data.message }
     }
   }
 
@@ -31,8 +31,7 @@ export const UserProvider = ({ children }) => {
       setCurrentUser(res.data.user)
       return res.data.user
     } catch (err) {
-      console.log(err.response)
-      return { error: err.response.data }
+      return { error: err.response.data.message }
     }
   }
 
